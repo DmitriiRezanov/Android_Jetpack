@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.androidjetpack.R
 import com.example.androidjetpack.databinding.FragmentChooseLevelBinding
+import com.example.androidjetpack.domain.entity.Level
 
 
 class ChooseLevelFragment : Fragment() {
@@ -23,9 +24,44 @@ class ChooseLevelFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        with(binding){
+            btnLevelTest.setOnClickListener {
+                launchGameFragment(Level.TEST)
+            }
+            btnLevelEasy.setOnClickListener {
+                launchGameFragment(Level.EASY)
+            }
+            btnLevelNormal.setOnClickListener {
+                launchGameFragment(Level.NORMAL)
+            }
+            btnLevelHard.setOnClickListener {
+                launchGameFragment(Level.HARD)
+            }
+        }
+
+    }
+
+    private fun launchGameFragment(level: Level){
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.main_container, GameFragment.newInstance(level))
+            .addToBackStack(GameFragment.NAME_FRAGMENT)
+            .commit()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    companion object {
+
+        const val NAME_FRAGMENT = "ChooseLevelFragment"
+
+        fun newInstance(): ChooseLevelFragment {
+            return ChooseLevelFragment()
+        }
     }
 
 }
