@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.OnBackPressedDispatcher
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.findNavController
 import com.example.androidjetpack.R
 import com.example.androidjetpack.databinding.FragmentGameFinishedBinding
 import com.example.androidjetpack.domain.entity.GameResult
@@ -40,19 +41,13 @@ class GameFinishedFragment : Fragment() {
     }
 
     private fun setupClickListeners() {
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                retryGame()
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
         binding.buttonRetry.setOnClickListener {
             retryGame()
         }
     }
 
     private fun bindViews() {
-        with(binding){
+        with(binding) {
             emojiResult.setImageResource(getSmileResId())
             tvRequiredAnswers.text = String.format(
                 getString(R.string.required_score),
@@ -73,8 +68,8 @@ class GameFinishedFragment : Fragment() {
         }
     }
 
-    private fun getSmileResId() : Int {
-        return if (gameResult.winner){
+    private fun getSmileResId(): Int {
+        return if (gameResult.winner) {
             R.drawable.ic_smile
         } else {
             R.drawable.ic_retry
@@ -107,16 +102,13 @@ class GameFinishedFragment : Fragment() {
     }
 
     private fun retryGame() {
-        requireActivity().supportFragmentManager.popBackStack(
-            GameFragment.NAME_FRAGMENT,
-            FragmentManager.POP_BACK_STACK_INCLUSIVE
-        )
+        findNavController().popBackStack()
     }
 
 
     companion object {
 
-        private const val KEY_GAME_RESULT = "game_result"
+        const val KEY_GAME_RESULT = "game_result"
 
         fun newInstance(gameResult: GameResult): GameFinishedFragment {
             return GameFinishedFragment().apply {
