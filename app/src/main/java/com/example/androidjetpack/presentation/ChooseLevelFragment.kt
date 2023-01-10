@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.example.androidjetpack.R
 import com.example.androidjetpack.databinding.FragmentChooseLevelBinding
 import com.example.androidjetpack.domain.entity.Level
 
@@ -27,7 +26,7 @@ class ChooseLevelFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(binding){
+        with(binding) {
             btnLevelTest.setOnClickListener {
                 launchGameFragment(Level.TEST)
             }
@@ -44,11 +43,10 @@ class ChooseLevelFragment : Fragment() {
 
     }
 
-    private fun launchGameFragment(level: Level){
-        val args = Bundle().apply {
-            putParcelable(GameFragment.KEY_LEVEL, level)
-        }
-        findNavController().navigate(R.id.action_chooseLevelFragment_to_gameFragment, args)
+    private fun launchGameFragment(level: Level) {
+        findNavController().navigate(
+            ChooseLevelFragmentDirections.actionChooseLevelFragmentToGameFragment(level)
+        )
     }
 
     override fun onDestroy() {
@@ -56,13 +54,5 @@ class ChooseLevelFragment : Fragment() {
         _binding = null
     }
 
-    companion object {
-
-        const val NAME_FRAGMENT = "ChooseLevelFragment"
-
-        fun newInstance(): ChooseLevelFragment {
-            return ChooseLevelFragment()
-        }
-    }
 
 }
